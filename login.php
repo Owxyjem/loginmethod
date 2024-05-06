@@ -1,6 +1,18 @@
 <?php require_once("classes/database.php");
 $con= new database();
-
+if (isset($_POST['login'])) {
+  $username=$_POST['username'];
+  $password=$_POST['password'];
+  $result=$con-> check ($username, $password);
+  if ($result) {
+      if ($result['username'] == $_POST['username'] && $result['password'] == $_POST['password']){
+          $_SESSION['username'] = $_result['username'];
+          header('location:index.php');
+          }
+  else {echo "error";}
+      }
+      else {echo "error";}
+   }
 ?>
 
 <!DOCTYPE html>
@@ -29,30 +41,7 @@ $con= new database();
 <div class="container-fluid login-container rounded shadow">
   <h2 class="text-center mb-4">Login</h2>
 
-<?php
-if(isset($_POST['login'])){
-    $username=$_POST['username'];
-    $password=$_POST['password'];
-    $result=$con->check($username,$password);
-    if($result){
-    if($result['username'] == $_POST['username'] && $result['password'] == $_POST['password']){
-       $_SESSION['username'] = $result['username'];
-        header('location:index.php');
-    }else{
-        echo "error";
-    }
-}
 
-
-
-    }
-   
-
-
-
-
-
-?>
 
   <form method="post">
     <div class="form-group">
@@ -65,10 +54,11 @@ if(isset($_POST['login'])){
     </div>
     <div class="container">
     <div class="row gx-1">
-    <div class="col"><input value="login" type='submit' class="btn btn-primary btn-block" name="Login" ></div>
+    <div class="col"><input value="login" type='submit' class="btn btn-primary btn-block" name="login" ></div>
     <div class="col"><a class= "btn btn-danger btn-block" href="signup.php">Sign Up</a></div>
     
 </div>
+</form>
 <!-- Bootstrap JS and dependencies -->
 <link rel="stylesheet" href="bootstrap-4.5.3-dist/bootstrap-4.5.3-dist/js/bootstrap.js">
 <link rel="stylesheet" href="bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/">
