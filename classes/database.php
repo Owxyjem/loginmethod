@@ -1,6 +1,6 @@
 <?php
 class Database {
-    
+    //add comment
     public function opencon() {
         return new PDO('mysql:host=localhost;dbname=loginmethod','root','');
     }
