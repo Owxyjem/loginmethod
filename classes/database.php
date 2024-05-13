@@ -30,5 +30,47 @@ class Database {
         $count = $con->prepare($query)->execute([$username])->fetchColumn(); 
         return $count > 0; 
     }
+    function view()
+    {
+        $con = $this->opencon();
+        return $con->query("SELECT
+        users.UserID,
+        users.firstname,
+        users.lastname,
+        users.birthday,
+        users.sex,
+        users.username,
+        users.password,
+        CONCAT(
+            users_address.users_add_street,
+            ' ',
+            users_address.users_add_barangay, ' ',
+            users_address.users_add_city, ' ',
+            users_address.users_add_province
+        ) AS address
+    FROM
+        users
+    JOIN users_address ON users.UserID = users_address.UserID")->fetchAll();
+    
+    }
+    function delete($id)
+    {
+        try{
+            $con = $this->opencon();
+            $con->beginTransaction();
+
+            $query = $con->prepare("DELETE FROM users_address WHERE UserID = ?");
+            $query->execute([$id]);
+
+            $query2 = $con->prepare("DELETE FROM users WHERE UserID = ?");
+            $query2->execute([$id]);
+
+            $con->commit();
+            return true;
+        } catch (PDOException $e) {
+            $con->rollBack();
+            return false;
+        }
+    }
 }
 ?>
