@@ -1,29 +1,29 @@
 <?php
 require_once('classes/database.php');
 $con = new database();
-
+ 
 $error = "";
-
+ 
 if (isset($_POST['signup'])) {
-  $username = $_POST['username'];
-  $password = $_POST['password'];
-  $Confirmpassword = $_POST['Confirmpassword'];
-  $firstname = $_POST['firstname'];
-  $lastname = $_POST['lastname']; 
-  $birthday = $_POST['birthday']; 
-  $sex = $_POST['sex'];
-
-
-
+  $Username = $_POST['Username'];
+  $Pass_word = $_POST['Pass_word'];
+  $ConfirmPass_word = $_POST['ConfirmPass_word'];
+  $Firstname = $_POST['Firstname'];
+  $Lastname = $_POST['Lastname'];
+  $Birthday = $_POST['Birthday'];
+  $SEX = $_POST['SEX'];
+ 
+ 
+ 
    
-    if ($con->isUsernameTaken($username)) {
+    if ($con->isUsernameTaken($Username)) {
         $error = "Username is already taken. Please choose another one.";
     } else {
-        if ($password === $Confirmpassword) { 
-            $result = $con->register($username, $password, $firstname, $lastname, $birthday, $sex);
-
+        if ($Pass_word === $ConfirmPass_word) {
+            $result = $con->register($Username, $Pass_word, $Firstname, $Lastname, $Birthday, $SEX);
+ 
             if ($result) {
-                header('location:login.php');
+                header('location: login.php');
                 exit;
             } else {
                 $error = "Error occurred while registering. Please try again.";
@@ -34,7 +34,7 @@ if (isset($_POST['signup'])) {
     }
 }
 ?>
-
+ 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,56 +50,55 @@ if (isset($_POST['signup'])) {
             height: auto;
             padding: 20px;
             margin-top: 100px;
-          
+         
         }
     </style>
 </head>
 <body>
-
+ 
 <div class="container-fluid signup-container rounded shadow">
     <h2 class="text-center mb-4">Sign Up</h2>
     <form method="post">
         <div class="form-group">
-            <label for="firstname">First name:</label>
-            <input type="text" class="form-control" name="firstname" placeholder="Enter First name">
+            <label for="Firstname">First name:</label>
+            <input type="text" class="form-control" name="Firstname" placeholder="Enter First name">
         </div>
         <form method="post">
         <div class="form-group">
-            <label for="lasttname">Last name:</label>
-            <input type="text" class="form-control" name="lastname" placeholder="Enter Last name">
+            <label for="Lasttname">Last name:</label>
+            <input type="text" class="form-control" name="Lastname" placeholder="Enter Last name">
         </div>
-
+ 
     <div class="mb-3">
-      <label for="birthday" class="form-label">Birthday:</label>
-      <input type="date" class="form-control" name="birthday">
+      <label for="Birthday" class="form-label">Birthday:</label>
+      <input type="date" class="form-control" name="Birthday">
     </div>
     <div class="mb-3">
-      <label for="sex" class="form-label">Sex:</label>
-      <select class="form-select" name="sex">
+      <label for="SEX" class="form-label">Sex:</label>
+      <select class="form-select" name="SEX">
         <option selected disabled>Select Sex</option>
         <option value="male">Male</option>
         <option value="female">Female</option>
-        
+ 
       </select>
     </div>
-
-    <form method="post">
+ 
         <div class="form-group">
             <label for="username">Username:</label>
-            <input type="text" class="form-control" name="username" placeholder="Enter username">
+            <input type="text" class="form-control" name="Username" placeholder="Enter username">
         </div>
-        
-
+       
+ 
         <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" class="form-control" name="password" placeholder="Enter password">
+            <label for="Pass_word">Password:</label>
+            <input type="password" class="form-control" name="Pass_word" placeholder="Enter password">
         </div>
-        
-        <div class="form-group"> 
-            <label for="Confirmpassword">Confirm Password:</label>
-            <input type="password" class="form-control" name="Confirmpassword" placeholder="Confirm password">
+       
+        <div class="form-group">
+            <label for="ConfirmPass_word">Confirm Password:</label>
+            <input type="password" class="form-control" name="ConfirmPass_word" placeholder="Confirm password">
         </div>
-
+ 
         <?php if (!empty($error)) : ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <?php echo $error; ?>
@@ -107,10 +106,12 @@ if (isset($_POST['signup'])) {
             </div>
         <?php endif; ?>
         <input type="submit" class="btn btn-danger btn-block" value="Sign Up" name="signup">
+ 
+ 
        
     </form>
 </div>
-
+ 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

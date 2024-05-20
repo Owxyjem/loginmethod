@@ -1,19 +1,15 @@
-<!-- To be added in the multisave.php -->
-
 <?php
-
+ 
 require_once('classes/database.php');
-
+ 
 $con = new database();
-if (isset($_POST['multisave'])) {
-    $firstname = $_POST['firstname'];
-    $lastname = $_POST['lastname'];
-    $birthday  = $_POST['birthday'];
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+if (isset($_POST['adduser'])) {
+    $username = $_POST['user'];
+    $password = $_POST['pass'];
+    $confirm = $_POST['c_pass'];
     $city = $_POST['city'];
     $province = $_POST['province'];
-    
+   
     if ($password == $confirm) {
         // Passwords match, proceed with signup
         $user_id = $con->signupUser($username, $password); // Insert into users table and get user_id

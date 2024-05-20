@@ -1,32 +1,27 @@
-
 <?php
+ 
 require_once('classes/database.php');
  
 $con = new database();
- 
-$error = ''; // Initialize error variable
- 
 if (isset($_POST['multisave'])) {
-    $username = $_POST['username'];
-    $firstname = $_POST['firstname'];
-    $lastname = $_POST['lastname'];
-    $birthday = $_POST['birthday'];
-    $street = $_POST['streetname'];
-    $barangay = $_POST['barangay'];
-    $password = $_POST['password'];
-    $city = $_POST['city'];
-    $province = $_POST['province'];
-    $sex = $_POST['sex'];
- 
- 
+  $firstName = $_POST['firstName'];
+  $lastName = $_POST['lastName'];
+  $Birthday = $_POST['Birthday'];
+  $username = $_POST['username'];
+  $passwords = $_POST['passwords'];
+  $c_pass = $_POST['c_pass'];
+  $street = $_POST['street'];
+  $Sex = $_POST['Sex'];
+  $barangay = $_POST['barangay'];
+  $city = $_POST['city'];
+  $province = $_POST['province'];
    
-    // Perform password confirmation
-    if ($password == $_POST['c_pass']) {
+    if ($passwords == $c_pass) {
         // Passwords match, proceed with signup
-        $userID = $con->register($username, $password, $firstname, $lastname, $birthday, $sex); // Insert into users table and get user_id
-        if ($userID) {
+        $user_id= $con->signupUser($username, $passwords, $firstName, $lastName, $Birthday,$Sex); // Insert into users table and get user_id
+        if ($user_id) {
             // Signup successful, insert address into users_address table
-            if ($con->insertAddress($userID, $street, $city, $barangay, $province)) {
+            if ($con->insertAddress($user_id, $city, $province, $barangay , $street)) {
                 // Address insertion successful, redirect to login page
                 header('location:login.php');
                 exit();
@@ -43,9 +38,10 @@ if (isset($_POST['multisave'])) {
         $error = "Passwords did not match. Please try again.";
     }
 }
+ 
 ?>
  
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -55,19 +51,20 @@ if (isset($_POST['multisave'])) {
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
+ 
   <style>
     .custom-container{
-        width: 800px;
+       
     }
     body{
     font-family: 'Roboto', sans-serif;
     }
+ 
   </style>
-
+ 
 </head>
 <body>
-
+ 
 <div class="container custom-container rounded-3 shadow my-5 p-3 px-5">
   <h3 class="text-center mt-4"> Registration Form</h3>
   <form method="post">
@@ -78,21 +75,21 @@ if (isset($_POST['multisave'])) {
         <div class="form-row">
           <div class="form-group col-md-6 col-sm-12">
             <label for="firstName">First Name:</label>
-            <input type="text" class="form-control" name="firstname" placeholder="Enter first name">
+            <input type="text" class="form-control" name="firstName" placeholder="Enter first name">
           </div>
           <div class="form-group col-md-6 col-sm-12">
             <label for="lastName">Last Name:</label>
-            <input type="text" class="form-control" name="lastname" placeholder="Enter last name">
+            <input type="text" class="form-control" name="lastName" placeholder="Enter last name">
           </div>
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="birthday">Birthday:</label>
-            <input type="date" class="form-control" name="birthday">
+            <input type="date" class="form-control" name="Birthday">
           </div>
           <div class="form-group col-md-6">
-            <label for="sex">Sex:</label>
-            <select class="form-control" name="sex">
+            <label for="Sex">Sex:</label>
+            <select class="form-control" name="Sex">
               <option selected>Select Sex</option>
               <option>Male</option>
               <option>Female</option>
@@ -104,23 +101,25 @@ if (isset($_POST['multisave'])) {
           <input type="text" class="form-control" name="username" placeholder="Enter username">
         </div>
         <div class="form-group">
-          <label for="password">Password:</label>
-          <input type="password" class="form-control" name="password" placeholder="Enter password">
+          <label for="passwords">Password:</label>
+          <input type="passwords" class="form-control" name="passwords" placeholder="Enter password" required>
         </div>
         <div class="form-group">
-          <label for="password">Confirm Password:</label>
-          <input type="password" class="form-control" name="c_pass" placeholder="Confirm password">
+          <label for="c_pass">Confirm Password:</label>
+          <input type="passwords" class="form-control" name="c_pass" placeholder="Confirm password" required>
         </div>
       </div>
     </div>
-    
+   
+ 
+   
     <!-- Address Information -->
     <div class="card mt-4">
       <div class="card-header bg-info text-white">Address Information</div>
       <div class="card-body">
         <div class="form-group">
           <label for="street">Street:</label>
-          <input type="text" class="form-control" name="streetname" placeholder="Enter street">
+          <input type="text" class="form-control" name="street" placeholder="Enter street">
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
@@ -138,24 +137,25 @@ if (isset($_POST['multisave'])) {
         </div>
       </div>
     </div>
-    
+   
     <!-- Submit Button -->
-    
+   
     <div class="container">
     <div class="row justify-content-center gx-0">
-        <div class="col-lg-3 col-md-4"> 
+        <div class="col-lg-3 col-md-4">
             <input type="submit" name="multisave" class="btn btn-outline-primary btn-block mt-4" value="Sign Up">
         </div>
-        <div class="col-lg-3 col-md-4"> 
+        <div class="col-lg-3 col-md-4">
             <a class="btn btn-outline-danger btn-block mt-4" href="login.php">Go Back</a>
+ 
         </div>
     </div>
 </div>
-
-
+ 
+ 
   </form>
 </div>
-
+ 
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -165,3 +165,4 @@ if (isset($_POST['multisave'])) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+ 
